@@ -3,18 +3,27 @@ import "./style.css"
 
 export const Productlist = () => {
     const [formMessage, setFormMessage] = useState("")
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        setFormMessage("Product saving is not connected yet. Connect a product API to publish this listing.")
+        await products()
     }
 
 
 
 
     const [cat, setcat] = useState([])
-    const [catid, setcatid] = useState("")
+
     const [brand, setbrand] = useState([])
 
+
+
+    const [pname, setpname] = useState("")
+    const [catid, setcatid] = useState("")
+    const [brandid, setbrandid] = useState("")
+    const [description, setdescription] = useState("")
+    const [priceimg, setpriceimg] = useState("")
+    const [price, setprice] = useState(0)
+    const [saleprice, setsaleprice] = useState(0)
 
 
     const getcat = async () => {
@@ -65,6 +74,40 @@ export const Productlist = () => {
         getcat()
     }, [])
 
+    const products = async () => {
+        if (!pname || !catid || !brandid || !price) {
+            setFormMessage("Please complete the required product fields before submitting.")
+            return
+        }
+
+        const item = new FormData()
+        item.append("productname", pname)
+        item.append("cat", catid)
+        item.append("brand", brandid)
+        item.append("description", description)
+        if (priceimg) {
+            item.append("pic", priceimg)
+        }
+        item.append("price", String(price))
+        item.append("saleprice", String(saleprice || 0))
+
+        const result = await fetch("http://localhost:9000/api/prices", {
+            method: "post",
+            body: item
+        })
+        if (result) {
+            const res = await result.json()
+            if (res.statuscode === 1) {
+                setFormMessage(res.msg || "Product saved successfully.")
+                alert(res.msg)
+            }
+            else {
+                setFormMessage(res.msg || "Unable to save product.")
+                alert(res.msg)
+            }
+        }
+    }
+
 
 
     return (
@@ -109,14 +152,7 @@ export const Productlist = () => {
                         <div className="product-fields">
                             <div className="product-field product-field-full">
                                 <label htmlFor="product-name">Product name <span aria-hidden="true">*</span></label>
-                                <input
-                                    id="product-name"
-                                    name="productName"
-                                    type="text"
-                                    placeholder="e.g. "
-                                    autoComplete="off"
-                                    required
-                                />
+                                <input onChange={(e) => setpname(e.target.value)} />
                             </div>
 
                             <div className="product-field">
@@ -124,7 +160,10 @@ export const Productlist = () => {
                                 <select id="product-category"
                                     name="category"
                                     defaultValue="" required
-                                    onChange={(a) => setcatid(a.target.value)}>
+                                    onChange={(a) => {
+                                        setcatid(a.target.value)
+                                        setbrandid("")
+                                    }}>
                                     <option value="" disabled>Select a category</option>
                                     {
                                         cat.map((e) =>
@@ -137,14 +176,19 @@ export const Productlist = () => {
 
                             <div className="product-field">
                                 <label htmlFor="product-brand">Brand <span aria-hidden="true">*</span></label>
-                                <select id="product-category"
-                                    name="category"
-                                    defaultValue="" required
-                                >
-                                    <option value="" disabled>Select a category</option>
+                                <select id="product-brand"
+                                    name="brand"
+                                    value={brandid}
+                                    required
+                                    onChange={(a) => {
+                                        setbrandid(a.target.value)
+
+                                    }}>
+
+                                    <option value="" disabled>Select a brand</option>
                                     {
                                         brand.map((e) =>
-                                            <option value={e._id}>{e.Brand}</option>
+                                            <option key={e._id} value={e._id}>{e.Brand}</option>
                                         )
                                     }
 
@@ -154,6 +198,7 @@ export const Productlist = () => {
                             <div className="product-field product-field-full">
                                 <label htmlFor="product-description">Description</label>
                                 <textarea
+                                    onChange={(a) => setdescription(a.target.value)}
                                     id="product-description"
                                     name="description"
                                     placeholder="Tell shoppers what makes this pair special..."
@@ -164,12 +209,55 @@ export const Productlist = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="prices">
-                            <label>price </label>
-                            <input placeholder="price"></input>
+                        <div className="productimg" aria-labelledby="product-image-title">
+                            <div className="productimg-header">
+                                <p className="productimg-kicker">MEDIA</p>
+                                <h3 id="product-image-title">Product image</h3>
+                            </div>
 
-                            <label>Sale price</label>
-                            <input placeholder="saleprice"></input>
+                            <label className="productimg-upload" htmlFor="product-image">
+                                <span className="productimg-upload-icon" aria-hidden="true">↑</span>
+                                <span className="productimg-upload-text">Upload product image</span>
+                                <input id="product-image" name="productImage" type="file" accept="image/*" onChange={(a) => setpriceimg(a.target.files[0])} />
+                            </label>
+                            <span className="product-field-hint">Choose a clear front-facing image for the product listing.</span>
+                        </div>
+                        <div className="price-section" aria-labelledby="pricing-title">
+                            <div className="price-header">
+                                <div>
+                                    <p className="price-kicker">PRICING</p>
+                                    <h3 id="pricing-title">Set the product price</h3>
+                                </div>
+                            </div>
+
+                            <div className="price-grid">
+                                <div className="product-field">
+                                    <label htmlFor="product-price">Price <span aria-hidden="true">*</span></label>
+                                    <input
+                                        onChange={(a) => setprice(a.target.value)}
+                                        id="product-price"
+                                        name="price"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="e.g. 2999"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="product-field">
+                                    <label htmlFor="product-sale-price">Sale price</label>
+                                    <input
+                                        onChange={(a) => setsaleprice(a.target.value)}
+                                        id="product-sale-price"
+                                        name="salePrice"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="e.g. 2499"
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         <footer className="product-form-footer">

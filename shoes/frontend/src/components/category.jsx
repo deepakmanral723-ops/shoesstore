@@ -22,7 +22,7 @@ export const Catagory = () => {
         if (result) {
             const res = await result.json()
             if (res.statuscode === 1) {
-                alert(res.msg)
+                // alert(res.msg)
             }
             else {
                 alert(res.msg)
@@ -62,6 +62,7 @@ export const Catagory = () => {
             method: "post",
             body: data2
         })
+
         if (result) {
             const res = await result.json()
             if (res.statuscode === 1) {

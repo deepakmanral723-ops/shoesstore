@@ -9,6 +9,8 @@ import { Catagory } from "./category"
 import { Related } from "./related"
 
 import { Productlist } from "./productslist"
+import { Brandproducts } from "./brandproducts"
+import { Buynow } from "./buynow"
 
 
 export const Rout = () => {
@@ -22,6 +24,9 @@ export const Rout = () => {
             <Route path="/login2" element={<Login2></Login2>}></Route>
             <Route path="/catagory" element={<Catagory></Catagory>}></Route>
             <Route path="/related" element={<Related></Related>}></Route>
+            <Route path="/brandproduct" element={<Brandproducts></Brandproducts>}></Route>
+            <Route path="/buynow" element={<Buynow></Buynow>}> </Route>
+
 
             <Route path="/product" element={<Productlist></Productlist>}></Route>
         </Routes>

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { Link, Links } from "react-router-dom"
+import "./style.css"
 
 export const Home = () => {
 
     const [data, setdata] = useState([])
+    const [product, setproduct] = useState([])
 
     useEffect(() => {
         getmethod()
@@ -25,6 +27,26 @@ export const Home = () => {
             // alert(res.msg)
         }
     }
+
+
+    const getbrands = async () => {
+        const result = await fetch("http://localhost:9000/api/getproduct", {
+            method: "get"
+        })
+        const res = await result.json()
+        if (res.statuscode === 1) {
+            // alert(res.msg)
+            setproduct(res.data)
+        }
+        else (alert(
+            res.msg
+        ))
+    }
+    useEffect(() => {
+        getbrands()
+    }, [])
+
+
 
     return (
         <>
@@ -152,6 +174,24 @@ export const Home = () => {
                             </a>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section className="showproducts">
+                <div className="showproducts-grid">
+                    {
+                        product.map((a) =>
+                            <Link to={`/buynow?pid=${a._id}`}>
+                                <article key={a.id} className="showproduct-card">
+                                    <div className="showproduct-image-wrap">
+                                        <img className="showproduct-image" src={`/uploads/${a.Productimg}`} alt={a.Category} />
+                                    </div>
+                                    <h3 className="showproduct-name">{a.Name}</h3>
+                                    <h3>₹{a.Price}</h3>
+                                </article>
+                            </Link>
+                        )
+                    }
                 </div>
             </section>
 

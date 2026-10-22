@@ -2,6 +2,7 @@ const mongoose = require("mongoose")  //connect all packages
 const cors = require("cors")        //connect all packages
 const express = require("express")  //connect all packages
 const multer = require("multer")
+const bcrypt = require("bcrypt")
 
 const app = express()                      // make an app variable to connect express and cors
 app.use(cors())                           //
@@ -14,6 +15,7 @@ app.listen(9000, () => {              //make a server host 9000
 mongoose.connect("mongodb://localhost:27017/Shoes")      //connect with mongodb 
     .then(() => console.log("database connected"))      // then mean code running perfectly
     .catch((err) => console.log(err))                  // catch means something error
+
 
 const Register = mongoose.Schema(
     {
@@ -28,6 +30,9 @@ const Registermodel = mongoose.model("Registers", Register, "Registers")
 
 app.post("/api/register", async (req, res) => {
 
+    const hash = bcrypt.hashSync(req.body.password, 10)
+
+
     const exist = await Registermodel.findOne({
         Email: req.body.email
     })
@@ -40,7 +45,7 @@ app.post("/api/register", async (req, res) => {
             Firstname: req.body.firstname,
             Lastname: req.body.lastname,
             Email: req.body.email,
-            Password: req.body.password
+            Password: hash
         })
         if (result) {
             const response = await result.save()
@@ -60,9 +65,12 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
 
+
+
     const result = await Registermodel.findOne({ Email: req.body.email })
+    const cpass = bcrypt.compareSync(req.body.pass, result.Password)
     if (result) {
-        if (result.Password === req.body.pass) {
+        if (cpass == true) {
             res.send({ statuscode: 1, msg: "password matched" })
         }
         else {
@@ -182,10 +190,109 @@ app.post("/api/branded", upload.single("pic"), async (req, res) => {
 })
 app.get("/api/getbrand/:id", async (req, res) => {
     const result = await Brandmodel.find({ Category: req.params.id })
-    console.log(result)
+
     if (result.length > 0) {
         return res.send({ statuscode: 1, data: result })
     }
     return res.send({ statuscode: 0 })
 })
 
+
+
+const Products = mongoose.Schema({
+    Name: String,
+    Category: String,
+    Brand: String,
+    Description: String,
+    Productimg: String,
+    Price: Number,
+    Saleprice: Number
+})
+const Productmodel = mongoose.model("Product", Products, "Product")
+
+app.post("/api/prices", upload.single("pic"), async (req, res) => {
+    const result = await Productmodel({
+        Name: req.body.productname,
+        Category: req.body.cat,
+        Brand: req.body.brand,
+        Description: req.body.description,
+        Productimg: pic,
+        Price: req.body.price,
+        Saleprice: req.body.saleprice,
+        Quantity: req.body.qty
+    })
+    if (result) {
+        const response = await result.save()
+        if (response) {
+            res.send({ statuscode: 1, msg: "price post success" })
+        }
+        else {
+            res.send({ statuscode: 0, msg: "error in price " })
+        }
+    }
+})
+
+app.get("/api/getproduct", async (req, res) => {
+    const result = await Productmodel.find()
+    if (result) {
+        res.send({ statuscode: 1, data: result, msg: "products get" })
+    }
+    else {
+        res.send({ statuscode: 0, msg: "error in get products" })
+    }
+})
+app.get("/api/getbybrand/:id", async (req, res) => {
+    const result = await Productmodel.find({ Brand: req.params.id })
+
+    if (result) {
+        return res.send({ statuscode: 1, data: result })
+    }
+    return res.send({ statuscode: 0 })
+})
+app.get("/api/buynow/:id", async (req, res) => {
+    const result = await Productmodel.find({ _id: req.params.id })
+    if (result) {
+        res.send({ statuscode: 1, msg: "buynow success", data: result })
+    }
+    else {
+        res.send({ statuscode: 0, msg: "buy now error" })
+    }
+})
+
+app.get("/api/categoryproduct/:id", async (req, res) => {
+    const result = await Productmodel.find()
+    if (result) {
+        res.send({ statuscode: 1, data: result, msg: "products get" })
+    }
+    else {
+        res.send({ statuscode: 0, msg: "error in get products" })
+    }
+})
+
+const Cart = mongoose.Schema({
+
+    Productname: String,
+    Productimage: String,
+    Price: String,
+    quantity: String
+})
+
+const Cartmodel = mongoose.model("Carts", Cart, "Carts")
+app.post("/api/cart", upload.none(), async (req, res) => {
+    const result = await Cartmodel({
+        Productname: req.body.proname,
+        Productimage: req.body.pic,
+        Price: req.body.price,
+        quantity: req.body.qty
+
+    })
+    if (result) {
+        const response = await result.save()
+        if (response) {
+            res.send({ statuscode: 1, msg: "cart post success" })
+        }
+        else {
+            res.send({ statuscode: 0, msg: "error in cart " })
+        }
+    }
+})
