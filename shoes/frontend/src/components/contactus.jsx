@@ -1,133 +1,64 @@
-import { useState } from "react"
+﻿import { useState } from "react"
+import "./style.css"
 
 export const Contactus = () => {
-    const [name, setname] = useState("")
-    const [Email, setEmail] = useState("")
-    const [phone, setphone] = useState(0)
-    const [subject, setsubject] = useState("")
-    const [message, setmessage] = useState("")
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [phone, setPhone] = useState("")
+    const [subject, setSubject] = useState("")
+    const [message, setMessage] = useState("")
 
-
-    const contactus = async () => {
-        const result = await fetch("http://localhost:9000/api/contactus", {
-            method: "post",
-            body: JSON.stringify({ name, Email, phone, subject, message }),
-            headers: { "Content-type": "application/json" }
-        })
-        if (result) {
-            const res = await result.json()
-            if (res.statuscode === 1) {
-                alert(res.msg)
+    const contactUs = async (event) => {
+        event.preventDefault()
+        try {
+            const result = await fetch("http://localhost:9000/api/contactus", {
+                method: "POST",
+                body: JSON.stringify({ name, Email: email, phone, subject, message }),
+                headers: { "Content-Type": "application/json" }
+            })
+            const response = await result.json()
+            alert(response.msg)
+            if (response.statuscode === 1) {
+                setName(""); setEmail(""); setPhone(""); setSubject(""); setMessage("")
             }
-            else {
-                alert(res.msg)
-            }
+        } catch {
+            alert("Unable to send your message. Please try again later.")
         }
     }
 
-
-
-
     return (
-        <>
-            <section class="contact-page">
-                <div class="container">
-                    <div class="row g-sm-4 g-3">
-                        <div class="col-lg-5">
-                            <div class="contact-title">
-                                <h2>Get In Touch</h2>
-                                <p>We're here to help! Reach out to us with any questions, feedback, or inquiries, and we'll get
-                                    back to you as soon as possible.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-7">
-                            <form class="theme-form contact-form">
-                                <div class="row g-4">
-                                    <div class="col-12">
-                                        <div class="form-box">
-                                            <label for="name" class="form-label">Full Name</label>
-                                            <input onChange={(a) => setname(a.target.value)} type="text" id="name" class="form-control" placeholder="Full Name" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-box">
-                                            <label for="email">Email</label>
-                                            <input onChange={(a) => setEmail(a.target.value)} type="email" id="email" class="form-control" placeholder="Email" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-box">
-                                            <label for="review">Phone</label>
-                                            <input onChange={(a) => setphone(a.target.value)} type="number" id="review" class="form-control" placeholder="Enter Your Phone Number" />
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-box">
-                                            <label for="email">Subject</label>
-                                            <input onChange={(a) => setsubject(a.target.value)} type="text" id="last-name" class="form-control" placeholder="Subject" />
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-box">
-                                            <label for="review">Write Your Message</label>
-                                            <textarea onChange={(a) => setmessage(a.target.value)} rows="6" class="form-control" placeholder="Write Your Message"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-box">
-                                            <button onClick={contactus} class="btn btn-solid" type="button">Send Your Message</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-12">
-                            <div class="contact-right">
-                                <ul>
-                                    <li>
-                                        <div class="contact-icon">
-                                            <i class="ri-phone-fill"></i>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6>Contact Us</h6>
-                                            <p>+91 123 - 456 - 7890</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-icon">
-                                            <i class="ri-map-pin-fill"></i>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6>Address</h6>
-                                            <p>ABC Complex,Near xyz, New York</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-icon">
-                                            <i class="ri-mail-fill"></i>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6>Email</h6>
-                                            <p>support@multikart.com</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-icon">
-                                            <i class="ri-cellphone-fill"></i>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6>Fax</h6>
-                                            <p>support@multikart.com</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <main className="contact-page">
+            <section className="contact-hero">
+                <div className="contact-hero-inner">
+                    <p className="contact-eyebrow">Customer care</p>
+                    <h1>We would love to <span>hear from you.</span></h1>
+                    <p>Questions about sizing, orders or a pair you love? Our team is ready to help.</p>
                 </div>
             </section>
-
-        </>
+            <section className="contact-content">
+                <div className="contact-grid">
+                    <div className="contact-details">
+                        <p className="contact-section-tag">Get in touch</p>
+                        <h2>How can we help?</h2>
+                        <p className="contact-intro">Send us a message and the ShoeStore team will get back to you as soon as possible.</p>
+                        <div className="contact-info-list">
+                            <div className="contact-info-item"><div className="contact-info-icon" aria-hidden="true">☎</div><div><span>Call us</span><strong>+91 123 456 7890</strong></div></div>
+                            <div className="contact-info-item"><div className="contact-info-icon" aria-hidden="true">✉</div><div><span>Email us</span><strong>support@shoestore.com</strong></div></div>
+                            <div className="contact-info-item"><div className="contact-info-icon" aria-hidden="true">⌖</div><div><span>Visit us</span><strong>New York, United States</strong></div></div>
+                            <div className="contact-info-item"><div className="contact-info-icon" aria-hidden="true">◷</div><div><span>Opening hours</span><strong>Mon–Sat, 9:00 AM–7:00 PM</strong></div></div>
+                        </div>
+                    </div>
+                    <form className="contact-form-card" onSubmit={contactUs}>
+                        <div className="contact-form-heading"><p>Send a message</p><span>We usually reply within one business day.</span></div>
+                        <div className="contact-field contact-field-full"><label htmlFor="contact-name">Full name</label><input id="contact-name" value={name} onChange={(event) => setName(event.target.value)} type="text" placeholder="Enter your full name" required /></div>
+                        <div className="contact-field"><label htmlFor="contact-email">Email address</label><input id="contact-email" value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="you@example.com" required /></div>
+                        <div className="contact-field"><label htmlFor="contact-phone">Phone number</label><input id="contact-phone" value={phone} onChange={(event) => setPhone(event.target.value)} type="tel" placeholder="Enter your number" /></div>
+                        <div className="contact-field contact-field-full"><label htmlFor="contact-subject">Subject</label><input id="contact-subject" value={subject} onChange={(event) => setSubject(event.target.value)} type="text" placeholder="What can we help with?" required /></div>
+                        <div className="contact-field contact-field-full"><label htmlFor="contact-message">Message</label><textarea id="contact-message" value={message} onChange={(event) => setMessage(event.target.value)} rows="5" placeholder="Write your message here..." required></textarea></div>
+                        <button className="contact-submit-button contact-field-full" type="submit">Send message <span aria-hidden="true">→</span></button>
+                    </form>
+                </div>
+            </section>
+        </main>
     )
-
 }

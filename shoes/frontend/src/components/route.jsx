@@ -11,6 +11,9 @@ import { Related } from "./related"
 import { Productlist } from "./productslist"
 import { Brandproducts } from "./brandproducts"
 import { Buynow } from "./buynow"
+import { Checkout } from "./checkout"
+import { Wishlists } from "./wishlist"
+import { Adminheader } from "./headeradmin"
 
 
 export const Rout = () => {
@@ -20,12 +23,15 @@ export const Rout = () => {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/about" element={<Aboutus />}></Route>
             <Route path="/contact" element={<Contactus />}></Route>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/login2" element={<Login2></Login2>}></Route>
+            <Route path="/home" element={<Home />}></Route>
+            <Route path="/" element={<Login2></Login2>}></Route>
             <Route path="/catagory" element={<Catagory></Catagory>}></Route>
             <Route path="/related" element={<Related></Related>}></Route>
             <Route path="/brandproduct" element={<Brandproducts></Brandproducts>}></Route>
             <Route path="/buynow" element={<Buynow></Buynow>}> </Route>
+            <Route path="/checkout" element={<Checkout></Checkout>}></Route>
+            <Route path="/wishlist" element={<Wishlists></Wishlists>}></Route>
+            <Route path="/admin" element={<Adminheader></Adminheader>}></Route>
 
 
             <Route path="/product" element={<Productlist></Productlist>}></Route>

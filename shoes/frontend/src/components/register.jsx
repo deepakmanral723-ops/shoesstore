@@ -1,4 +1,5 @@
 import { useState } from "react"
+import "./style.css"
 
 export const Register = () => {
     const [firstname, setfirstname] = useState("")
@@ -29,49 +30,52 @@ export const Register = () => {
     }
 
     return (
-        <>
-            <section class="login-page section-b-space">
-                <div class="container">
-                    <h3>create account</h3>
-                    <div class="theme-card">
-                        <form class="theme-form">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-box">
-                                        <label for="email" class="form-label">First Name</label>
-                                        <input onChange={(a) => setfirstname(a.target.value)} type="text" class="form-control" id="fname" placeholder="First Name" required="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-box">
-                                        <label for="review" class="form-label">Last Name</label>
-                                        <input onChange={(a) => setlastname(a.target.value)} type="text" class="form-control" id="lname" placeholder="Last Name" required="" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-box">
-                                        <label for="email" class="form-label">email</label>
-                                        <input onChange={(a) => setemail(a.target.value)} type="text" class="form-control" id="email" placeholder="Email" required="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-box">
-                                        <label for="review" class="form-label">Password</label>
-                                        <input onChange={(a) => setpassword(a.target.value)} type="password" class="form-control" id="review" placeholder="Enter your password" required="" />
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button className="loginbtn" onClick={signin}> create Account</button>
-                                </div>
-                            </div>
-                        </form>
+        <section className="register-page">
+            <div className="register-card">
+                <div className="register-brand-panel">
+                    <div className="register-brand">
+                        <span>S</span>
+                        <strong>SHOE<strong>STORE</strong></strong>
+                    </div>
+                    <div className="register-shoe-mark">S</div>
+                    <div className="register-brand-copy">
+                        <p>Join the Community</p>
+                        <h1>Find your perfect pair.</h1>
+                        <span>Create your account to save favorites, track orders and enjoy a smoother shopping experience.</span>
                     </div>
                 </div>
-            </section>
 
-
-        </>
+                <div className="register-form-panel">
+                    <form className="register-form">
+                        <div className="register-heading">
+                            <p>Create Account</p>
+                            <h2>Sign up</h2>
+                            <span>Enter your details to start shopping.</span>
+                        </div>
+                        <div className="register-fields">
+                            <div className="register-field">
+                                <label htmlFor="fname">First Name</label>
+                                <input onChange={(a) => setfirstname(a.target.value)} type="text" id="fname" placeholder="First name" required="" />
+                            </div>
+                            <div className="register-field">
+                                <label htmlFor="lname">Last Name</label>
+                                <input onChange={(a) => setlastname(a.target.value)} type="text" id="lname" placeholder="Last name" required="" />
+                            </div>
+                            <div className="register-field register-field-wide">
+                                <label htmlFor="email">Email</label>
+                                <input onChange={(a) => setemail(a.target.value)} type="text" id="email" placeholder="Email address" required="" />
+                            </div>
+                            <div className="register-field register-field-wide">
+                                <label htmlFor="register-password">Password</label>
+                                <input onChange={(a) => setpassword(a.target.value)} type="password" id="register-password" placeholder="Create a password" required="" />
+                            </div>
+                        </div>
+                        <button className="register-submit" type="button" onClick={signin}>Create Account <span>→</span></button>
+                        <div className="register-divider"><span>Already have an account?</span></div>
+                        <a href="/" className="register-login">Sign in</a>
+                    </form>
+                </div>
+            </div>
+        </section>
     )
 }

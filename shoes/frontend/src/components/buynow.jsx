@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import "./style.css"
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { Context } from "./context"
 
 export const Buynow = () => {
 
@@ -9,6 +10,12 @@ export const Buynow = () => {
     const [pid] = useSearchParams()
     const pd = pid.get("pid")
     const product = purchase[0]
+    const navigate = useNavigate()
+
+    const { userid } = useContext(Context)
+
+
+
 
     const increasequantity = () => {
         setquantity((currentQuantity) => currentQuantity + 1)
@@ -19,9 +26,6 @@ export const Buynow = () => {
     const decreasequantity = () => {
         setquantity((currentQuantity) => Math.max(1, currentQuantity - 1))
     };
-
-
-
 
     useEffect(() => {
 
@@ -48,12 +52,12 @@ export const Buynow = () => {
             alert("Product details are still loading.")
             return
         }
-
         const items = new FormData()
         items.append("proname", product.Name)
         items.append("pic", product.Productimg)
         items.append("price", String(product.Price))
         items.append("qty", String(quantity))
+        items.append("userid", userid)
 
         const result = await fetch(`http://localhost:9000/api/cart`, {
             method: "post",
@@ -62,7 +66,38 @@ export const Buynow = () => {
         if (result) {
             const res = await result.json()
             if (res.statuscode === 1) {
-                // alert(res.msg)
+
+                navigate(`/checkout`)
+
+            }
+            else {
+                alert(res.msg)
+            }
+        }
+
+    }
+
+
+    const store = async () => {
+        if (!product) {
+            alert("Product details are still loading.")
+            return
+        }
+        const item = new FormData()
+        item.append("pname", product.Name)
+        item.append("pic", product.Productimg)
+        item.append("rate", String(product.Price))
+        item.append("userid", userid)
+
+        const result = await fetch(`http://localhost:9000/api/wishlist`, {
+            method: "post",
+            body: item
+
+        })
+        if (result) {
+            const res = await result.json()
+            if (res.statuscode === 1) {
+                navigate(`/wishlist`)
             }
             else {
                 alert(res.msg)
@@ -107,7 +142,20 @@ export const Buynow = () => {
                                 </div>
 
                                 <div className="buy-now-details">
-                                    <p className="buy-now-category">SHOES / EVERYDAY COMFORT</p>
+                                    <div className="buy-now-category-row">
+                                        <p className="buy-now-category">SHOES / EVERYDAY COMFORT</p>
+                                        <button
+                                            type="button"
+                                            className="wishlist-icon"
+                                            aria-label="Add to wishlist"
+                                            title="Add to wishlist"
+                                            onClick={store}
+                                        >
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                     <p className="buy-now-bestseller">BEST SELLER</p>
                                     <h1>{a.Name}</h1>
                                     <div className="buy-now-rating" aria-label="Rated 4.8 out of 5">

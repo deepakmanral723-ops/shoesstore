@@ -51,9 +51,9 @@ export const Home = () => {
     return (
         <>
 
-            <section class="p-0">
-                <a href="category-page.html" class="home text-center">
-                    <img src="../assets/images/shoes/full-banner/1.png" alt="" class="img-fluid blur-up lazyload" />
+            <section className="p-0">
+                <a href="category-page.html" className="home text-center">
+                    <img src="../assets/images/shoes/full-banner/1.png" alt="" className="img-fluid blur-up lazyload" />
                 </a>
             </section>
 
@@ -70,8 +70,8 @@ export const Home = () => {
                     <div className="category-grid">
                         {
                             data.map((a, index) => (
-                                <Link to={`/related?cid=${a._id}`}>
-                                    <div key={`${a.Category}-${index}`} className="category-item">
+                                <Link key={`${a._id}-${index}`} to={`/related?cid=${a._id}`}>
+                                    <div className="category-item">
                                         <img src={`/uploads/${a.Cateimg}`} alt={a.Category} />
                                         <div className="category-item-content">
                                             <p>{a.Category}</p>
@@ -86,15 +86,15 @@ export const Home = () => {
 
 
             <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="title3">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-8 offset-lg-2">
+                            <div className="title3">
                                 <h4>about us</h4>
-                                <h2 class="title-inner3">welcome to multi store</h2>
-                                <div class="line"></div>
+                                <h2 className="title-inner3">welcome to multi store</h2>
+                                <div className="line"></div>
                             </div>
-                            <div class="about-text">
+                            <div className="about-text">
                                 <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
                                     laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
                                     architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
@@ -109,23 +109,23 @@ export const Home = () => {
 
 
 
-            <section class="section-b-space pt-0 ratio_40">
-                <div class="container">
-                    <div class="row partition2">
-                        <div class="col-md-6">
+            <section className="section-b-space pt-0 ratio_40">
+                <div className="container">
+                    <div className="row partition2">
+                        <div className="col-md-6">
                             <a href="category-page.html">
-                                <div class="collection-banner p-right text-center">
-                                    <div class="img-part">
-                                        <img src="../assets/images/shoes/banner/1.png" class="img-fluid blur-up lazyload" alt="" />
+                                <div className="collection-banner p-right text-center">
+                                    <div className="img-part">
+                                        <img src="../assets/images/shoes/banner/1.png" className="img-fluid blur-up lazyload" alt="" />
                                     </div>
                                 </div>
                             </a>
                         </div>
-                        <div class="col-md-6">
+                        <div className="col-md-6">
                             <a href="category-page.html">
-                                <div class="collection-banner p-right text-center">
-                                    <div class="img-part">
-                                        <img src="../assets/images/shoes/banner/2.png" class="img-fluid blur-up lazyload" alt="" />
+                                <div className="collection-banner p-right text-center">
+                                    <div className="img-part">
+                                        <img src="../assets/images/shoes/banner/2.png" className="img-fluid blur-up lazyload" alt="" />
                                     </div>
                                 </div>
                             </a>
@@ -135,40 +135,40 @@ export const Home = () => {
             </section>
 
 
-            <section class="p-0">
-                <div class="container">
-                    <div class="row background">
-                        <div class="col">
+            <section className="p-0">
+                <div className="container">
+                    <div className="row background">
+                        <div className="col">
                             <a href="#!">
-                                <div class="contain-bg">
+                                <div className="contain-bg">
                                     <h4 data-hover="size 06">size 06</h4>
                                 </div>
                             </a>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <a href="#!">
-                                <div class="contain-bg">
+                                <div className="contain-bg">
                                     <h4>size 07</h4>
                                 </div>
                             </a>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <a href="#!">
-                                <div class="contain-bg">
+                                <div className="contain-bg">
                                     <h4>size 08</h4>
                                 </div>
                             </a>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <a href="#!">
-                                <div class="contain-bg">
+                                <div className="contain-bg">
                                     <h4>size 09</h4>
                                 </div>
                             </a>
                         </div>
-                        <div class="col">
+                        <div className="col">
                             <a href="#!">
-                                <div class="contain-bg">
+                                <div className="contain-bg">
                                     <h4>size 10</h4>
                                 </div>
                             </a>
@@ -177,12 +177,12 @@ export const Home = () => {
                 </div>
             </section>
 
-            <section className="showproducts">
+            <section className="showproducts" id="allproducts">
                 <div className="showproducts-grid">
                     {
                         product.map((a) =>
-                            <Link to={`/buynow?pid=${a._id}`}>
-                                <article key={a.id} className="showproduct-card">
+                            <Link key={a._id} to={`/buynow?pid=${a._id}`}>
+                                <article className="showproduct-card">
                                     <div className="showproduct-image-wrap">
                                         <img className="showproduct-image" src={`/uploads/${a.Productimg}`} alt={a.Category} />
                                     </div>
@@ -197,48 +197,48 @@ export const Home = () => {
 
 
 
-            <section class="section-b-space">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="slide-6 no-arrow d-flex justify-content-center">
+            <section className="section-b-space">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="slide-6 no-arrow d-flex justify-content-center">
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/1.png" alt="" /></a>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/2.png" alt="" /></a>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/3.png" alt="" /></a>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/4.png" alt="" /></a>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/5.png" alt="" /></a>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/6.png" alt="" /></a>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/7.png" alt="" /></a>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="logo-block">
+                                    <div className="logo-block">
                                         <a href="#!"><img src="../assets/images/logos/8.png" alt="" /></a>
                                     </div>
                                 </div>
@@ -247,7 +247,6 @@ export const Home = () => {
                     </div>
                 </div>
             </section>
-
 
 
 

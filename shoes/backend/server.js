@@ -1,12 +1,15 @@
 const mongoose = require("mongoose")  //connect all packages
-const cors = require("cors")        //connect all packages
+const cors = require("cors")         //connect all packages
 const express = require("express")  //connect all packages
 const multer = require("multer")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+
+const key = "yj55Uexc%%x"
 
 const app = express()                      // make an app variable to connect express and cors
 app.use(cors())                           //
-app.use(express.json())                 // convert into json 
+app.use(express.json())                  // convert into json 
 
 app.listen(9000, () => {              //make a server host 9000 
     console.log("server is running") //console show on terminal to check its working or not
@@ -22,7 +25,8 @@ const Register = mongoose.Schema(
         Firstname: String,
         Lastname: String,
         Email: String,
-        Password: String
+        Password: String,
+        UserType:String
 
     }
 )
@@ -45,7 +49,8 @@ app.post("/api/register", async (req, res) => {
             Firstname: req.body.firstname,
             Lastname: req.body.lastname,
             Email: req.body.email,
-            Password: hash
+            Password: hash,
+            UserType:"User"
         })
         if (result) {
             const response = await result.save()
@@ -71,14 +76,17 @@ app.post("/api/login", async (req, res) => {
     const cpass = bcrypt.compareSync(req.body.pass, result.Password)
     if (result) {
         if (cpass == true) {
-            res.send({ statuscode: 1, msg: "password matched" })
-        }
+            let token = jwt.sign({
+                id: result._id, email: result.Email,utype:result.UserType
+            }, key, { expiresIn: "1h" })
+            res.send({ statuscode: 1, msg: "password matched", data: result, jwttoken: token })
+        } 
         else {
             res.send({ statuscode: 0, msg: "password error" })
         }
     }
     else {
-        alert(res.send({ statuscode: 0, msg: "user not found" }))
+        res.send({ statuscode: 0, msg: "user not found" })
     }
 })
 
@@ -274,7 +282,8 @@ const Cart = mongoose.Schema({
     Productname: String,
     Productimage: String,
     Price: String,
-    quantity: String
+    quantity: String,
+    Userid: String
 })
 
 const Cartmodel = mongoose.model("Carts", Cart, "Carts")
@@ -283,16 +292,83 @@ app.post("/api/cart", upload.none(), async (req, res) => {
         Productname: req.body.proname,
         Productimage: req.body.pic,
         Price: req.body.price,
-        quantity: req.body.qty
+        quantity: req.body.qty,
+        Userid: req.body.userid
 
     })
     if (result) {
         const response = await result.save()
         if (response) {
-            res.send({ statuscode: 1, msg: "cart post success" })
+            res.send({ statuscode: 1, msg: "Products added" })
         }
         else {
             res.send({ statuscode: 0, msg: "error in cart " })
         }
+    }
+})
+app.get("/api/checkout/:id", async (req, res) => {
+    const result = await Cartmodel.find({ Userid: req.params.id })
+    if (result) {
+        res.send({ statuscode: 1, msg: "checkout complete", data: result })
+    }
+    else {
+        res.send({ statuscode: 0, msg: "error in checkout" })
+    }
+})
+app.delete("/api/delete/:id", async (req, res) => {
+    const result = await Cartmodel.deleteOne({ _id: req.params.id })
+    if (result.deletedCount > 0) {
+        res.send({ statuscode: 1, msg: "item removed" })
+    }
+    else {
+        res.send({ statuscode: 0, msg: "error in delete" })
+    }
+})
+
+const Wish = mongoose.Schema({
+    Pname: String,
+    Pimage: String,
+    Rate: String,
+    Userid: String
+})
+const Wishlist = mongoose.model("wishs", Wish, "Wishs")
+
+app.post("/api/wishlist", upload.single("pic"), async (req, res) => {
+    const result = await Wishlist({
+        Pname: req.body.pname,
+        Pimage: req.body.pic,
+        Rate: req.body.rate,
+        Userid: req.body.userid
+    })
+    if (result) {
+        const response = await result.save()
+        if (response) {
+            res.send({ statuscode: 1, msg: " add to wishlist" })
+        }
+        else {
+            res.send({
+                statuscode: 0, msg: "error in wishlist"
+            })
+        }
+    }
+})
+app.get("/api/getwish/:id", async (req, res) => {
+    const result = await Wishlist.find({ Userid: req.params.id })
+    if (result) {
+        res.send({ statuscode: 1, msg: " get wishlist", data: result })
+    }
+    else {
+        res.send({
+            statuscode: 0, msg: "error in wishlist"
+        })
+    }
+})
+app.delete("/api/removeitem/:id", async (req, res) => {
+    const result = await Wishlist.deleteOne({ _id: req.params.id })
+    if (result.deletedCount > 0) {
+        res.send({ statuscode: 1, msg: "item remove from wishlist" })
+    }
+    else {
+        res.send({ statuscode: 0, msg: " error in wishlist" })
     }
 })
