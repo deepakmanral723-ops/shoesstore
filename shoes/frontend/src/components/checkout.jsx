@@ -13,16 +13,16 @@ export const Checkout = () => {
         const value = [...check]
 
         const newqty = Number(value[index].quantity) + change
- if(newqty<1) return
-        
+        if (newqty < 1) return
+
         value[index].quantity = newqty
-       
+
 
         setcheck(value)
 
     };
 
-    
+
 
     const detail = async () => {
         const result = await fetch(`http://localhost:9000/api/checkout/${userid}`, {
@@ -39,6 +39,7 @@ export const Checkout = () => {
             }
         }
     }
+
     useEffect(() => {
         detail()
     }
@@ -51,7 +52,7 @@ export const Checkout = () => {
         if (result) {
             const res = await result.json()
             if (res.statuscode === 1) {
-                alert(res.msg)
+                // alert(res.msg)
                 detail()
             }
             else {
@@ -99,31 +100,33 @@ export const Checkout = () => {
                                     <span aria-hidden="true">✓</span> Secure checkout
                                 </span>
                             </div>
-                            {
-                                check.map((a, index) =>
-                                    <div className="purchase-item" key={index}>
-                                        <img
-                                            className="checkout-item-image"
-                                            alt={a.Productname}
-                                            src={`/uploads/${a.Productimage}`}
-                                        />
-                                        <div className="purchase-item-details">
-                                            <span className="purchase-item-label">Item</span>
-                                            <h3>{a.Productname}</h3>
-                                            <div className="purchase-item-meta">
-                                                <p><span>Price</span><strong>{a.Price}</strong></p>
+                            <div className="item-section">
+                                {
+                                    check.map((a, index) =>
+                                        <div className="purchase-item" key={index}>
+                                            <img
+                                                className="checkout-item-image"
+                                                alt={a.Productname}
+                                                src={`/uploads/${a.Productimage}`}
+                                            />
+                                            <div className="purchase-item-details">
+                                                <span className="purchase-item-label">Item</span>
+                                                <h3>{a.Productname}</h3>
+                                                <div className="purchase-item-meta">
+                                                    <p><span>Price</span><strong>{a.Price}</strong></p>
 
-                                                <button onClick={() => updatequantity(index, -1)}>-</button>
-                                                <p><span>Quantity</span><strong>{a.quantity}</strong></p>
-                                                <button onClick={() => updatequantity(index, 1)}>+</button>
+                                                    <button onClick={() => updatequantity(index, -1)}>-</button>
+                                                    <p><span>Quantity</span><strong>{a.quantity}</strong></p>
+                                                    <button onClick={() => updatequantity(index, 1)}>+</button>
 
-                                                <button onClick={() => remove(a._id)}>❌</button>
+                                                    <button onClick={() => remove(a._id)}>❌</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                )
-                            }
+                                    )
+                                }
+                            </div>
                             <div className="checkout-delivery-note">
                                 <span className="checkout-delivery-icon" aria-hidden="true">↗</span>
                                 <span><strong>Free delivery</strong><br />Complimentary shipping on your order.</span>

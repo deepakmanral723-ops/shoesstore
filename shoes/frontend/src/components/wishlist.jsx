@@ -16,6 +16,7 @@ export const Wishlists = () => {
             const res = await result.json()
             if (res.statuscode === 1) {
                 setdata(res.data)
+                // alert(res.msg)
 
             }
             else {
@@ -33,7 +34,7 @@ export const Wishlists = () => {
         if (result) {
             const res = await result.json()
             if (res.statuscode === 1) {
-                alert(res.msg)
+                // alert(res.msg)
                 info()
             }
             else {

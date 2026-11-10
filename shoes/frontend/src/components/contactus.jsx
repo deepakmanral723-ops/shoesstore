@@ -49,12 +49,28 @@ export const Contactus = () => {
                         </div>
                     </div>
                     <form className="contact-form-card" onSubmit={contactUs}>
-                        <div className="contact-form-heading"><p>Send a message</p><span>We usually reply within one business day.</span></div>
-                        <div className="contact-field contact-field-full"><label htmlFor="contact-name">Full name</label><input id="contact-name" value={name} onChange={(event) => setName(event.target.value)} type="text" placeholder="Enter your full name" required /></div>
-                        <div className="contact-field"><label htmlFor="contact-email">Email address</label><input id="contact-email" value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="you@example.com" required /></div>
-                        <div className="contact-field"><label htmlFor="contact-phone">Phone number</label><input id="contact-phone" value={phone} onChange={(event) => setPhone(event.target.value)} type="tel" placeholder="Enter your number" /></div>
-                        <div className="contact-field contact-field-full"><label htmlFor="contact-subject">Subject</label><input id="contact-subject" value={subject} onChange={(event) => setSubject(event.target.value)} type="text" placeholder="What can we help with?" required /></div>
-                        <div className="contact-field contact-field-full"><label htmlFor="contact-message">Message</label><textarea id="contact-message" value={message} onChange={(event) => setMessage(event.target.value)} rows="5" placeholder="Write your message here..." required></textarea></div>
+                        <div className="contact-form-heading"><p>Send a message</p>
+                            <span>We usually reply within one business day.</span>
+                        </div>
+                        <div className="contact-field contact-field-full">
+                            <label htmlFor="contact-name">Full name</label>
+                            <input id="contact-name" value={name} onChange={(event) => setName(event.target.value)} type="text" placeholder="Enter your full name" required />
+                        </div>
+                        <div className="contact-field">
+                            <label htmlFor="contact-email">Email address</label>
+                            <input id="contact-email" value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="you@example.com" required />
+                        </div>
+                        <div className="contact-field">
+                            <label htmlFor="contact-phone">Phone number</label>
+                            <input id="contact-phone" value={phone} onChange={(event) => setPhone(event.target.value)} type="tel" placeholder="Enter your number" /></div>
+                        <div className="contact-field contact-field-full">
+                            <label htmlFor="contact-subject">Subject</label>
+                            <input id="contact-subject" value={subject} onChange={(event) => setSubject(event.target.value)} type="text" placeholder="What can we help with?" required />
+                        </div>
+                        <div className="contact-field contact-field-full">
+                            <label htmlFor="contact-message">Message</label>
+                            <textarea id="contact-message" value={message} onChange={(event) => setMessage(event.target.value)} rows="5" placeholder="Write your message here..." required></textarea>
+                        </div>
                         <button className="contact-submit-button contact-field-full" type="submit">Send message <span aria-hidden="true">→</span></button>
                     </form>
                 </div>
