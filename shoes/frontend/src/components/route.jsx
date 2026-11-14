@@ -14,6 +14,7 @@ import { Buynow } from "./buynow"
 import { Checkout } from "./checkout"
 import { Wishlists } from "./wishlist"
 import { Adminheader } from "./headeradmin"
+import { Address } from "./address"
 
 
 export const Rout = () => {
@@ -32,6 +33,7 @@ export const Rout = () => {
             <Route path="/checkout" element={<Checkout></Checkout>}></Route>
             <Route path="/wishlist" element={<Wishlists></Wishlists>}></Route>
             <Route path="/admin" element={<Adminheader></Adminheader>}></Route>
+            <Route path="/address" element={<Address></Address>}></Route>
 
 
             <Route path="/product" element={<Productlist></Productlist>}></Route>

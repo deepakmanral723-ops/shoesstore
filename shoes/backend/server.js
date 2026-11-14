@@ -26,7 +26,7 @@ const Register = mongoose.Schema(
         Lastname: String,
         Email: String,
         Password: String,
-        UserType:String
+        UserType: String
 
     }
 )
@@ -50,7 +50,7 @@ app.post("/api/register", async (req, res) => {
             Lastname: req.body.lastname,
             Email: req.body.email,
             Password: hash,
-            UserType:"User"
+            UserType: "User"
         })
         if (result) {
             const response = await result.save()
@@ -77,10 +77,10 @@ app.post("/api/login", async (req, res) => {
     if (result) {
         if (cpass == true) {
             let token = jwt.sign({
-                id: result._id, email: result.Email,utype:result.UserType
+                id: result._id, email: result.Email, utype: result.UserType
             }, key, { expiresIn: "1h" })
             res.send({ statuscode: 1, msg: "password matched", data: result, jwttoken: token })
-        } 
+        }
         else {
             res.send({ statuscode: 0, msg: "password error" })
         }
@@ -371,4 +371,46 @@ app.delete("/api/removeitem/:id", async (req, res) => {
     else {
         res.send({ statuscode: 0, msg: " error in wishlist" })
     }
+})
+
+const Detail = mongoose.Schema({
+    Firstname: String,
+    Lastname: String,
+    Email: String,
+    Phone: String,
+    Street: String,
+    City: String,
+    State: String,
+    Code: String,
+    Country: String
+
+})
+const Detailmodel = mongoose.model("Details", Detail, "Details")
+
+app.post("/api/detail", upload.none(), async (req, res) => {
+
+    const result = await Detailmodel({
+
+        Firstname: req.body.firstname,
+        Lastname: req.body.lastname,
+        Email: req.body.email,
+        Phone: req.body.phone,
+        Street: req.body.street,
+        City: req.body.city,
+        State: req.body.state,
+        Code: req.body.code,
+        Country: req.body.country
+
+    })
+    if (result) {
+        const response = await result.save()
+        if (response) {
+            res.send({ statuscode: 1, msg: "data store successfully" })
+        }
+        else {
+            res.send({ statuscode: 0, msg: "error in detailmodel" })
+        }
+    }
+
+
 })

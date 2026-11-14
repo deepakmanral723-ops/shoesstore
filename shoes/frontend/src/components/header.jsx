@@ -2,6 +2,11 @@ import "./style.css"
 
 export const Header = () => {
 
+    const Clear = () => {
+        localStorage.clear()
+    }
+
+
     return (
         <header className="site-header">
             <div className="header-container">
@@ -43,7 +48,7 @@ export const Header = () => {
                             <span className="header-cart-count">0</span>
                         </a>
 
-                        <a href="/" className="header-login">Sign In</a>
+                        <a href="/" className="header-login" onClick={Clear}>Sign In</a>
                     </div>
                 </nav>
             </div>

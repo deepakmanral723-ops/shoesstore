@@ -2202,6 +2202,321 @@
   }
 }
 
+/* Customer details */
+.address-page {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  padding: 38px 32px 64px;
+  background: #f7f8fa;
+  color: #263148;
+  text-align: left;
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+.address-page *,
+.address-page *::before,
+.address-page *::after {
+  box-sizing: border-box;
+}
+
+.address-content {
+  width: min(100%, 1080px);
+  margin: 0 auto;
+}
+
+.address-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  color: #929aaa;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.address-breadcrumb-current {
+  color: #4b5870;
+}
+
+.address-heading {
+  margin-bottom: 30px;
+}
+
+.address-eyebrow {
+  margin: 0 0 8px;
+  color: #6677df;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+}
+
+.address-heading h1 {
+  margin: 0;
+  color: #202a3d;
+  font-size: clamp(30px, 4vw, 38px);
+  font-weight: 700;
+  letter-spacing: -1.3px;
+  line-height: 1.15;
+}
+
+.address-heading > p:last-child {
+  margin: 10px 0 0;
+  color: #7c8799;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.address-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 350px;
+  align-items: start;
+  gap: 22px;
+}
+
+.address-form-card,
+.address-order-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #e9ecf2;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(33, 47, 75, 0.04);
+}
+
+.address-card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eef0f4;
+}
+
+.address-step {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #ecefff;
+  color: #6677df;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.address-card-heading h2,
+.address-order-heading h2 {
+  margin: 0;
+  color: #263148;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.address-card-heading p {
+  margin: 5px 0 0;
+  color: #8a93a4;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.customer-form {
+  padding-top: 21px;
+}
+
+.customer-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px 15px;
+}
+
+.customer-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.customer-field-wide {
+  grid-column: 1 / -1;
+}
+
+.customer-field label {
+  color: #4c5870;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.customer-field input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #e2e6ee;
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: #263148;
+  font: inherit;
+  font-size: 13px;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.customer-field input:focus {
+  border-color: #6677df;
+  box-shadow: 0 0 0 3px rgba(102, 119, 223, 0.13);
+}
+
+.address-submit-button {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 9px;
+  background: #6677df;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.address-submit-button:hover {
+  transform: translateY(-1px);
+  background: #5668d3;
+}
+
+.address-submit-button:focus-visible {
+  outline: 3px solid rgba(102, 119, 223, 0.3);
+  outline-offset: 3px;
+}
+
+.address-privacy-note,
+.address-secure-note {
+  margin: 13px 0 0;
+  color: #929aaa;
+  font-size: 11px;
+  text-align: center;
+}
+
+.address-order-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #eef0f4;
+}
+
+.address-order-heading .address-eyebrow {
+  margin-bottom: 6px;
+}
+
+.address-item-count {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #f2f4fb;
+  color: #68758d;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.address-order-message {
+  margin: 20px 0;
+  color: #8a93a4;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.address-order-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 18px;
+}
+
+.address-order-totals > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #788397;
+  font-size: 12px;
+}
+
+.address-order-totals strong {
+  color: #39465d;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.address-order-totals .address-free-delivery {
+  color: #4b9a70;
+}
+
+.address-order-totals .address-order-total {
+  margin-top: 3px;
+  padding-top: 16px;
+  border-top: 1px solid #eef0f4;
+  color: #303b50;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.address-order-totals .address-order-total strong {
+  color: #202a3d;
+  font-size: 19px;
+  letter-spacing: -0.4px;
+}
+
+.address-secure-note {
+  margin-top: 19px;
+}
+
+.address-secure-note span {
+  margin-right: 4px;
+  color: #56a47a;
+}
+
+@media (max-width: 760px) {
+  .address-page {
+    padding: 28px 18px 48px;
+  }
+
+  .address-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 460px) {
+  .address-page {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .address-form-card,
+  .address-order-card {
+    padding: 18px;
+  }
+
+  .customer-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .customer-field-wide {
+    grid-column: auto;
+  }
+}
+
 /* Wishlist */
 .wishlist-page {
   box-sizing: border-box;

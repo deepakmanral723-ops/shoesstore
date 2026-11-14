@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from "react"
 import "./style.css"
 import { Context } from "./context"
+import { useNavigate } from "react-router-dom"
 
 export const Checkout = () => {
 
     const [check, setcheck] = useState([])
     const { userid } = useContext(Context)
     const [quantity, setquantity] = useState()
+    const navigate = useNavigate()
 
 
     const updatequantity = (index, change) => {
@@ -60,6 +62,10 @@ export const Checkout = () => {
             }
         }
     }
+
+    const totalamount = check.reduce((num, a) => num + (a.Price * a.quantity), 0)
+    const tax = totalamount * 0.05
+    const grandtotal = totalamount + tax
 
 
 
@@ -137,11 +143,11 @@ export const Checkout = () => {
                             <h2 id="checkout-summary-title">Order summary</h2>
                             <div className="checkout-summary-row">
                                 <span>Subtotal</span>
-                                <span id="subtotal">₹00</span>
+                                <span id="subtotal">₹ {totalamount}</span>
                             </div>
                             <div className="checkout-summary-row">
-                                <span>Tax <span className="checkout-tax-note">(8%)</span></span>
-                                <span id="tax">$0.00</span>
+                                <span>Tax <span className="checkout-tax-note">(5%)</span></span>
+                                <span id="tax">$ {tax}</span>
                             </div>
                             <div className="checkout-summary-row checkout-shipping-row">
                                 <span>Shipping</span>
@@ -149,9 +155,9 @@ export const Checkout = () => {
                             </div>
                             <div className="checkout-summary-total">
                                 <span>Total</span>
-                                <strong id="total">$0.00</strong>
+                                <strong id="total">$ {grandtotal}</strong>
                             </div>
-                            <button className="checkout-button" type="button">
+                            <button onClick={() => { navigate("/address", { state: { total: totalamount, tax: tax, grandtotal: grandtotal } }) }} className="checkout-button" type="button">
                                 Continue to checkout <span aria-hidden="true">→</span>
                             </button>
                             <p className="checkout-payment-note">
