@@ -1,11 +1,32 @@
+import { useContext, useEffect, useState } from "react"
 import "./style.css"
+import { Context } from "./context"
 
 export const Header = () => {
+    const { userid, cartRevision } = useContext(Context)
+    const [list, setlist] = useState([])
 
     const Clear = () => {
         localStorage.clear()
     }
 
+    const Cartitems = async () => {
+      if (!userid) return
+
+      const result=await fetch(`http://localhost:9000/api/checkout/${userid}`,{
+        method:"get"
+      })
+      if(result){
+        const res=await result.json()
+        if(res.statuscode===1){
+            setlist(res.data)
+        }
+        else{
+            alert(res.msg)
+        }
+      }
+    }
+    useEffect(() => { Cartitems() }, [userid, cartRevision])
 
     return (
         <header className="site-header">
@@ -45,7 +66,12 @@ export const Header = () => {
                                 <circle cx="18" cy="20" r="1"></circle>
                                 <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 7H6"></path>
                             </svg>
-                            <span className="header-cart-count">0</span>
+
+                            {
+                                list.length > 0 && (
+                                    <span className="header-cart-count">{list.length}</span>
+                                )
+                            }
                         </a>
 
                         <a href="/" className="header-login" onClick={Clear}>Sign In</a>

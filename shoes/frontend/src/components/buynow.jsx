@@ -12,10 +12,7 @@ export const Buynow = () => {
     const product = purchase[0]
     const navigate = useNavigate()
 
-    const { userid } = useContext(Context)
-
-
-
+    const { userid, setCartRevision } = useContext(Context)
 
     const increasequantity = () => {
         setquantity((currentQuantity) => currentQuantity + 1)
@@ -66,7 +63,7 @@ export const Buynow = () => {
         if (result) {
             const res = await result.json()
             if (res.statuscode === 1) {
-
+                setCartRevision((revision) => revision + 1)
                 navigate(`/checkout`)
 
             }
@@ -103,6 +100,15 @@ export const Buynow = () => {
                 alert(res.msg)
             }
         }
+
+    }
+
+
+
+
+    const Purchase = async () => {
+        cart()
+
 
     }
 
@@ -191,7 +197,7 @@ export const Buynow = () => {
                                     </p>
 
                                     <div className="buy-now-actions">
-                                        <button className="buy-now-primary" type="button">
+                                        <button onClick={Purchase} className="buy-now-primary" type="button">
                                             Buy Now <span aria-hidden="true">→</span>
                                         </button>
                                         <button onClick={cart} className="buy-now-secondary" type="button">Add to Cart</button>

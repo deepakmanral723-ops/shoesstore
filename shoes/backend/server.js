@@ -315,6 +315,16 @@ app.get("/api/checkout/:id", async (req, res) => {
         res.send({ statuscode: 0, msg: "error in checkout" })
     }
 })
+app.put("/api/updqty/:id", async (req, res) => {
+    const result = await Cartmodel.updateOne({ _id: req.params.id }, { $set: { quantity: req.body.new } })
+    if (result.modifiedCount > 0) {
+        res.send({ statuscode: 1, msg: "qty update" })
+    }
+    else {
+        res.send({ statuscode: 0, msg: "error in update qty" })
+    }
+})
+
 app.delete("/api/delete/:id", async (req, res) => {
     const result = await Cartmodel.deleteOne({ _id: req.params.id })
     if (result.deletedCount > 0) {
@@ -382,7 +392,8 @@ const Detail = mongoose.Schema({
     City: String,
     State: String,
     Code: String,
-    Country: String
+    Country: String,
+    Order: [{ Pname: String, Price: String, Pimg: String, Quantity: String }]
 
 })
 const Detailmodel = mongoose.model("Details", Detail, "Details")
@@ -399,9 +410,11 @@ app.post("/api/detail", upload.none(), async (req, res) => {
         City: req.body.city,
         State: req.body.state,
         Code: req.body.code,
-        Country: req.body.country
+        Country: req.body.country,
+        Order: JSON.parse(req.body.order)
 
     })
+
     if (result) {
         const response = await result.save()
         if (response) {
@@ -411,6 +424,5 @@ app.post("/api/detail", upload.none(), async (req, res) => {
             res.send({ statuscode: 0, msg: "error in detailmodel" })
         }
     }
-
 
 })

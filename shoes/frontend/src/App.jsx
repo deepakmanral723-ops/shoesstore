@@ -11,6 +11,7 @@ function App() {
   const [userid, setuserid] = useState("")
   const [email, setemail] = useState("")
   const [utype, setutype] = useState("")
+  const [cartRevision, setCartRevision] = useState(0)
 
 
 
@@ -35,11 +36,10 @@ function App() {
 
   return (
     <div className="app-shell">
-      {
-        utype === "Admin" ? <Adminheader></Adminheader> : <Header></Header>
-      }
-      <Context.Provider value={{ setuserid, userid, setemail, email, utype, setutype }}>
-
+      <Context.Provider value={{ setuserid, userid, setemail, email, utype, setutype, cartRevision, setCartRevision }}>
+        {
+          utype === "Admin" ? <Adminheader></Adminheader> : <Header></Header>
+        }
         <Rout></Rout>
       </Context.Provider>
 

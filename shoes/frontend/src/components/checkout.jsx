@@ -6,27 +6,15 @@ import { useNavigate } from "react-router-dom"
 export const Checkout = () => {
 
     const [check, setcheck] = useState([])
-    const { userid } = useContext(Context)
-    const [quantity, setquantity] = useState()
+    const { userid, setCartRevision } = useContext(Context)
+   
     const navigate = useNavigate()
-
-
-    const updatequantity = (index, change) => {
-        const value = [...check]
-
-        const newqty = Number(value[index].quantity) + change
-        if (newqty < 1) return
-
-        value[index].quantity = newqty
-
-
-        setcheck(value)
-
-    };
 
 
 
     const detail = async () => {
+        if (!userid) return
+
         const result = await fetch(`http://localhost:9000/api/checkout/${userid}`, {
             method: "get"
         })
@@ -34,7 +22,7 @@ export const Checkout = () => {
             const res = await result.json()
             if (res.statuscode === 1) {
                 setcheck(res.data)
-                setquantity(res.data.Quantity)
+                
             }
             else {
                 alert(res.msg)
@@ -47,6 +35,42 @@ export const Checkout = () => {
     }
         , [userid])
 
+
+    const updatequantity = async (index, change) => {
+        const value = check[index]
+
+        if (!value) return
+
+        const newqty = Number(value.quantity) + Number(change)
+
+        if (newqty < 1) return
+
+        const success = await newupdate(value._id, newqty)
+
+        if (success) {
+            await detail()
+        }
+    }
+    const newupdate = async (id, qty) => {
+        const result = await fetch(`http://localhost:9000/api/updqty/${id}`, {
+            method: "put",
+            body: JSON.stringify({ new: qty }),
+            headers: { "Content-type": "application/json" }
+        })
+        const res = await result.json()
+        if (res.statuscode === 1) {
+            return true
+
+        }
+        alert(res.msg)
+        return false
+    }
+
+
+
+
+
+
     const remove = async (id) => {
         const result = await fetch(`http://localhost:9000/api/delete/${id}`, {
             method: "delete"
@@ -54,7 +78,7 @@ export const Checkout = () => {
         if (result) {
             const res = await result.json()
             if (res.statuscode === 1) {
-                // alert(res.msg)
+                setCartRevision((revision) => revision + 1)
                 detail()
             }
             else {
@@ -109,7 +133,7 @@ export const Checkout = () => {
                             <div className="item-section">
                                 {
                                     check.map((a, index) =>
-                                        <div className="purchase-item" key={index}>
+                                        <div className="purchase-item" key={a._id}>
                                             <img
                                                 className="checkout-item-image"
                                                 alt={a.Productname}
@@ -147,7 +171,7 @@ export const Checkout = () => {
                             </div>
                             <div className="checkout-summary-row">
                                 <span>Tax <span className="checkout-tax-note">(5%)</span></span>
-                                <span id="tax">$ {tax}</span>
+                                <span id="tax">₹ {tax}</span>
                             </div>
                             <div className="checkout-summary-row checkout-shipping-row">
                                 <span>Shipping</span>
@@ -155,7 +179,7 @@ export const Checkout = () => {
                             </div>
                             <div className="checkout-summary-total">
                                 <span>Total</span>
-                                <strong id="total">$ {grandtotal}</strong>
+                                <strong id="total">₹ {grandtotal}</strong>
                             </div>
                             <button onClick={() => { navigate("/address", { state: { total: totalamount, tax: tax, grandtotal: grandtotal } }) }} className="checkout-button" type="button">
                                 Continue to checkout <span aria-hidden="true">→</span>

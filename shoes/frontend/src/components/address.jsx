@@ -1,10 +1,102 @@
 import { useLocation } from "react-router-dom"
 import "./style.css"
-
+import { useState } from "react"
+import { useContext } from "react"
+import { Context } from "./context"
+import { useEffect } from "react"
+import Swal from "sweetalert2"
 export const Address = () => {
 
+    const sweetalert = () => {
+
+        Swal.fire({
+            title: "Order Confirmed",
+            icon: "success",
+            draggable: true
+        });
+    }
+
+    const [items, setitems] = useState([])
+    const { userid } = useContext(Context)
+
     const location = useLocation()
-    const { total, tax, grandtotal } = location.state || {}
+    const [total, settotal] = useState(location.state?.total ?? 0)
+    const [tax, settax] = useState(location.state?.tax ?? 0)
+    const [grandtotal, setgrandtotal] = useState(location.state?.grandtotal ?? 0)
+
+    const [firstname, setfirstname] = useState("")
+    const [lastname, setlastname] = useState("")
+    const [email, setemail] = useState("")
+    const [phone, setphone] = useState("")
+    const [street, setstreet] = useState("")
+    const [city, setcity] = useState("")
+    const [state, setstate] = useState("")
+    const [code, setcode] = useState("")
+    const [country, setcountry] = useState("")
+
+    const Complete = async () => {
+
+        const Store = items.map((p) => ({
+            Pname: p.Pname,
+            Pimg: p.Pimg,
+            Price: p.Price,
+            Quantity: p.quantity
+
+        }))
+
+        const data = new FormData()
+        data.append("firstname", firstname)
+        data.append("lastname", lastname)
+        data.append("email", email)
+        data.append("phone", phone)
+        data.append("street", street)
+        data.append("city", city)
+        data.append("state", state)
+        data.append("code", code)
+        data.append("country", country)
+        data.append("order", JSON.stringify(Store))
+
+        const result = await fetch(`http://localhost:9000/api/detail`, {
+            method: "post",
+            body: data
+        })
+        if (result) {
+            const res = await result.json()
+            if (res.statuscode === 1) {
+                sweetalert()
+                Products()
+                settotal(0)
+                settax(0)
+                setgrandtotal(0)
+            }
+            else {
+                alert(res.msg)
+            }
+        }
+
+    }
+
+    const Products = async () => {
+        if (!userid) return
+
+        const result = await fetch(`http://localhost:9000/api/checkout/${userid}`, {
+            method: "get"
+        })
+        if (result) {
+            const res = await result.json()
+            if (res.statuscode === 1) {
+                setitems(res.data)
+            }
+            else {
+                alert(res.msg)
+            }
+        }
+
+    }
+    useEffect(() => { Products() }, [userid])
+
+
+
     return (
         <main className="address-page">
             <div className="address-content">
@@ -36,43 +128,43 @@ export const Address = () => {
                             <div className="customer-form-grid">
                                 <div className="customer-field">
                                     <label htmlFor="customer-first-name">First name</label>
-                                    <input id="customer-first-name" name="firstName" autoComplete="given-name" placeholder="e.g. Rahul" required />
+                                    <input onChange={(x) => setfirstname(x.target.value)} id="customer-first-name" name="firstName" autoComplete="given-name" placeholder="e.g. Rahul" required />
                                 </div>
                                 <div className="customer-field">
                                     <label htmlFor="customer-last-name">Last name</label>
-                                    <input id="customer-last-name" name="lastName" autoComplete="family-name" placeholder="e.g. Sharma" required />
+                                    <input onChange={(x) => setlastname(x.target.value)} id="customer-last-name" name="lastName" autoComplete="family-name" placeholder="e.g. Sharma" required />
                                 </div>
                                 <div className="customer-field">
                                     <label htmlFor="customer-email">Email address</label>
-                                    <input id="customer-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
+                                    <input onChange={(x) => setemail(x.target.value)} id="customer-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
                                 </div>
                                 <div className="customer-field">
                                     <label htmlFor="customer-phone">Phone number</label>
-                                    <input id="customer-phone" name="phone" type="tel" autoComplete="tel" placeholder="+91 98765 43210" required />
+                                    <input onChange={(x) => setphone(x.target.value)} id="customer-phone" name="phone" type="tel" autoComplete="tel" placeholder="+91 98765 43210" required />
                                 </div>
                                 <div className="customer-field customer-field-wide">
                                     <label htmlFor="customer-address">Street address</label>
-                                    <input id="customer-address" name="address" autoComplete="street-address" placeholder="House number and street name" required />
+                                    <input onChange={(x) => setstreet(x.target.value)} id="customer-address" name="address" autoComplete="street-address" placeholder="House number and street name" required />
                                 </div>
                                 <div className="customer-field">
                                     <label htmlFor="customer-city">City</label>
-                                    <input id="customer-city" name="city" autoComplete="address-level2" placeholder="e.g. New Delhi" required />
+                                    <input onChange={(x) => setcity(x.target.value)} id="customer-city" name="city" autoComplete="address-level2" placeholder="e.g. New Delhi" required />
                                 </div>
                                 <div className="customer-field">
                                     <label htmlFor="customer-state">State / region</label>
-                                    <input id="customer-state" name="state" autoComplete="address-level1" placeholder="e.g. Delhi" required />
+                                    <input onChange={(x) => setstate(x.target.value)} id="customer-state" name="state" autoComplete="address-level1" placeholder="e.g. Delhi" required />
                                 </div>
                                 <div className="customer-field">
                                     <label htmlFor="customer-postal-code">Postal code</label>
-                                    <input id="customer-postal-code" name="postalCode" autoComplete="postal-code" placeholder="e.g. 110001" required />
+                                    <input onChange={(x) => setcode(x.target.value)} id="customer-postal-code" name="postalCode" autoComplete="postal-code" placeholder="e.g. 110001" required />
                                 </div>
                                 <div className="customer-field">
                                     <label htmlFor="customer-country">Country</label>
-                                    <input id="customer-country" name="country" autoComplete="country-name" placeholder="e.g. India" required />
+                                    <input onChange={(x) => setcountry(x.target.value)} id="customer-country" name="country" autoComplete="country-name" placeholder="e.g. India" required />
                                 </div>
                             </div>
 
-                            <button className="address-submit-button" type="button">
+                            <button onClick={Complete} className="address-submit-button" type="button">
                                 Continue <span aria-hidden="true">→</span>
                             </button>
                             <p className="address-privacy-note">Your information is only used for this order.</p>
@@ -87,7 +179,24 @@ export const Address = () => {
                             </div>
                             <span className="address-item-count">Order summary</span>
                         </div>
-                        <p className="address-order-message">Your selected items will appear here.</p>
+                        <div className="cart-products">
+                            {items.length > 0 ? items.map((item) => (
+                                <article className="cart-product-item" key={item._id}>
+                                    <img
+                                        className="cart-product-image"
+                                        src={`/uploads/${item.Productimage}`}
+                                        alt={item.Productname}
+                                    />
+                                    <div className="cart-product-details">
+                                        <h3>{item.Productname}</h3>
+                                        <p>Quantity: {item.quantity}</p>
+                                        <strong>₹{item.Price}</strong>
+                                    </div>
+                                </article>
+                            )) : (
+                                <p className="address-order-message">Your selected items will appear here.</p>
+                            )}
+                        </div>
 
                         <div className="address-order-totals">
                             <div><span>Subtotal</span><strong>₹{total}</strong></div>

@@ -4,5 +4,7 @@ export const Context = createContext({
   userid: "",
   setuserid: () => {},
   email: "",
-  setemail: () => {}
+  setemail: () => {},
+  cartRevision: 0,
+  setCartRevision: () => {}
 })

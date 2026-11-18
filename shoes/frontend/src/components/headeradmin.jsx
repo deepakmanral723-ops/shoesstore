@@ -1,6 +1,10 @@
 import "./style.css"
 
 export const Adminheader = () => {
+
+    const clear = () => {
+        localStorage.clear()
+    }
     return (
         <header className="admin-header">
             <div className="admin-header-container">
@@ -16,7 +20,7 @@ export const Adminheader = () => {
                         <li><a href="/product">Productlist</a></li>
                     </ul>
 
-                    <a href="/" className="admin-signin">Sign In</a>
+                    <a href="/" className="admin-signin" onClick={clear}>Sign In</a>
                 </nav>
             </div>
         </header>
